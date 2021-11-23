@@ -3,7 +3,7 @@ import random
 import math
 
 from dino import Dino
-from obstacles import Obstacle
+from obstacles import SmallObstacle, TallObstacle
 
 (width, height) = (700,300)
 backgroundcolor = (255, 255, 255)
@@ -29,9 +29,13 @@ while running:
     if event.type == pygame.QUIT:
       running = False
     elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                 # Start to jump by setting isJump to True.
-                dino.isJump = True
+              dino.isJump = True
+            if event.key == pygame.K_DOWN:
+              dino.isDuck = True
+    else:
+      dino.isDuck = False
 
   screen.blit(background, (0,0))
 
@@ -40,7 +44,11 @@ while running:
 
   if len(obstacles) == 0:
     x = random.randint(10, 900)
-    obstacles.append(Obstacle(gamespeed, x))
+    rand = random.randint(1,2)
+    if rand == 2: 
+      obstacles.append(TallObstacle(gamespeed, x))
+    else:
+      obstacles.append(SmallObstacle(gamespeed, x))
 
   dino.update(screen)
 

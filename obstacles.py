@@ -4,7 +4,7 @@ import pygame
 
 class Obstacle:
     def __init__(self, game_speed, x):
-        self.rect = pygame.Rect(700, 210, 10, 40)
+        self.rect = pygame.Rect(700, 0, 0, 0)
         self.rect.x = 700 + x
         self.game_speed = game_speed
         self.color_green = pygame.Color(0,255,0)
@@ -21,3 +21,17 @@ class Obstacle:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color_green, self.rect)
+
+class SmallObstacle(Obstacle):
+    def __init__(self, game_speed, x):
+        super().__init__(game_speed, x)
+        self.rect.y = 230
+        self.rect.width = 50
+        self.rect.height = 20
+
+class TallObstacle(Obstacle):
+    def __init__(self, game_speed, x):
+        super().__init__(game_speed, x)
+        self.rect.y = 200
+        self.rect.width = 10
+        self.rect.height = 50

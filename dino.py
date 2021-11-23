@@ -11,7 +11,9 @@ class Dino:
         self.color_red = Color(255,0,0)
         self.isJump = False
         self.jumpcount = 10
-
+        self.dinoSprite = Rect(self.xPosition,self.yPosition - 40,20,40)
+        self.isDuck = False
+        
     def jump(self):
         if self.isJump:
             if self.jumpcount >= -10:
@@ -23,11 +25,19 @@ class Dino:
             else:
                 self.isJump = False
                 self.jumpcount = 10
+    
+    def duck(self):
+        if self.isDuck:
+            self.dinoSprite = Rect(self.xPosition,self.yPosition - 20,20,20)
+        else:
+            self.dinoSprite = Rect(self.xPosition,self.yPosition - 40,20,40)
 
     def update(self,screen):
+        self.duck()
         self.jump()
-        self.draw(screen)    
+        self.draw(screen)
+            
 
     def draw(self, screen):
-        self.dinoSprite = Rect(self.xPosition,self.yPosition - 40,20,40)
+        
         pygame.draw.rect(screen, self.color_red, self.dinoSprite)
