@@ -18,7 +18,7 @@ class Dino:
                 neg = 1
                 if self.jumpcount > 0:
                     neg = -1
-                self.yPosition += self.jumpcount**2 * 0.2 * neg
+                self.yPosition += self.jumpcount ** 2 * 0.2 * neg
                 self.jumpcount -= 1
             else:
                 self.isJump = False
