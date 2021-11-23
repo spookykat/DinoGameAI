@@ -37,7 +37,6 @@ while running:
 
   score += 0.03 * gamespeed
   gamespeed += 0.02
-  print(gamespeed)
 
   if len(obstacles) == 0:
     x = random.randint(10, 900)
@@ -50,8 +49,9 @@ while running:
     obstacle.draw(screen)
     running = obstacle.collide(dino)
 
-       
+  distanceNextObstacle = obstacle.rect.x - dino.xPosition
+  print(distanceNextObstacle)
   clock.tick(30)
   pygame.display.update()
-  
+
 print(math.floor(score))
