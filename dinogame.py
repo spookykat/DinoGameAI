@@ -64,7 +64,7 @@ class dinoGameAI:
             self.collided = not obstacle.collide(self.dino)
         self.distanceNextObstacle = obstacle.rect.x - self.dino.xPosition
         pygame.display.update()
-
+        self.clock.tick(100)
         if not self.collided:
             reward = int(self.score / 10)
         else:

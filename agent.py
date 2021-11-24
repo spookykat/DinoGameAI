@@ -47,7 +47,7 @@ class Agent:
 
     def get_action(self, state):
         #random moves: tradeoff exploration / exploitation
-        self.epsilon = 400 - self.n_games
+        self.epsilon = 80 - self.n_games
         final_move = [0,0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,1)
@@ -55,6 +55,7 @@ class Agent:
         else:
             state0 = torch.tensor(state, dtype=torch.float)
             prediction = self.model(state0)
+            print(prediction)
             move = torch.argmax(prediction).item()
             final_move[move] = 1
         
@@ -67,7 +68,6 @@ def train():
     record = 0
     agent = Agent()
     game = dinoGameAI()
-    clock = pygame.time.Clock()
     while True:
         #get old state
         state_old = agent.get_state(game)
@@ -95,7 +95,6 @@ def train():
             mean_score = total_score / agent.n_games
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
-        clock.tick(30)
 
 
 if __name__ == '__main__':
