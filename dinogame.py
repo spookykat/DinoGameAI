@@ -1,10 +1,11 @@
+from operator import countOf
 import pygame
 import random
 
 from dino import Dino
 from obstacles import TallObstacle, SmallObstacle
 
-class dinoGame:
+class dinoGameAI:
     def __init__(self):
         self.width = 700
         self.height = 300
@@ -14,12 +15,9 @@ class dinoGame:
         self.background.fill((self.backgroundcolor))
 
         self.dino = Dino()
-        self.gamespeed = 10
-        self.score = 0
-        self.obstacles = []
         self.clock = pygame.time.Clock()
-        self.frameiteration = 0
-        self.running = True
+        self.reset()
+        
 
         self.screen = pygame.display.set_mode((self.width, self.height))
 
@@ -30,6 +28,7 @@ class dinoGame:
         self.score = 0
         self.obstacles = []
         self.frameiteration = 0
+        self.collided = False
 
     def placeObstacle(self):
         if len(self.obstacles) == 0:
@@ -40,20 +39,14 @@ class dinoGame:
           else:
             self.obstacles.append(SmallObstacle(self.gamespeed, x))
 
-    def play_step(self):
+    def play_step(self, action):
         self.frameiteration += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
-                        # Start to jump by setting isJump to True.
-                        self.dino.isJump = True
-                    if event.key == pygame.K_DOWN:
-                        self.dino.isDuck = True
-            else:
-                self.dino.isDuck = False
+                pygame.quit()
+                quit()
+        self.move(action)
 
         self.screen.blit(self.background, (0,0))
 
@@ -66,11 +59,23 @@ class dinoGame:
         for obstacle in self.obstacles:
             obstacle.update(self.obstacles)     
             obstacle.draw(self.screen)
-            self.running = obstacle.collide(self.dino)
+            self.collided = not obstacle.collide(self.dino)
         pygame.display.update()
 
-dinogame = dinoGame()
-while dinogame.running:
+    def move(self, action="none"):
+        if action == "jump":
+            self.dino.isJump = True
+        if action == "duck":
+            self.dino.isDuck = True
+        else:
+            self.dino.isDuck = False
+
+dinogame = dinoGameAI()
+
+while not dinogame.collided:
+
+    dinogame.play_step("none")           
     dinogame.clock.tick(30)
-    dinogame.play_step()
+
+    
     
