@@ -19,6 +19,7 @@ class dinoGame:
         self.obstacles = []
         self.clock = pygame.time.Clock()
         self.frameiteration = 0
+        self.running = True
 
         self.screen = pygame.display.set_mode((self.width, self.height))
 
@@ -44,7 +45,7 @@ class dinoGame:
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                         # Start to jump by setting isJump to True.
@@ -53,3 +54,23 @@ class dinoGame:
                         self.dino.isDuck = True
             else:
                 self.dino.isDuck = False
+
+        self.screen.blit(self.background, (0,0))
+
+        self.score += 0.03 * self.gamespeed
+        self.gamespeed += 0.02
+
+        self.placeObstacle()
+
+        self.dino.update(self.screen)
+        for obstacle in self.obstacles:
+            obstacle.update(self.obstacles)     
+            obstacle.draw(self.screen)
+            self.running = obstacle.collide(self.dino)
+        pygame.display.update()
+
+dinogame = dinoGame()
+while dinogame.running:
+    dinogame.clock.tick(30)
+    dinogame.play_step()
+    

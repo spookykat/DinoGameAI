@@ -58,7 +58,6 @@ while running:
     running = obstacle.collide(dino)
 
   distanceNextObstacle = obstacle.rect.x - dino.xPosition
-  print(distanceNextObstacle)
   clock.tick(30)
   pygame.display.update()
 
