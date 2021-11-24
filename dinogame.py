@@ -50,6 +50,7 @@ class dinoGameAI:
 
         self.screen.blit(self.background, (0,0))
 
+        reward = 0
         self.score += 0.03 * self.gamespeed
         self.gamespeed += 0.02
 
@@ -60,22 +61,15 @@ class dinoGameAI:
             obstacle.update(self.obstacles)     
             obstacle.draw(self.screen)
             self.collided = not obstacle.collide(self.dino)
+        self.distanceNextObstacle = obstacle.rect.x - self.dino.xPosition
         pygame.display.update()
+        return reward, self.collided, self.score
 
-    def move(self, action="none"):
-        if action == "jump":
+    def move(self, action=[0,0]):
+        if action[0] == 1:
             self.dino.isJump = True
-        if action == "duck":
+        if action[1] == 1:
             self.dino.isDuck = True
         else:
             self.dino.isDuck = False
 
-dinogame = dinoGameAI()
-
-while not dinogame.collided:
-
-    dinogame.play_step("none")           
-    dinogame.clock.tick(30)
-
-    
-    
