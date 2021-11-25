@@ -18,7 +18,7 @@ class Agent:
         self.epsilon = 0 #randomness
         self.gamma = 0.8
         self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = Linear_Qnet(3, 256, 2) #TODO
+        self.model = Linear_Qnet(4, 256, 2) #TODO
         self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma) #TODO
 
 
@@ -26,7 +26,8 @@ class Agent:
         isJump = game.dino.isJump
         isDuck = game.dino.isDuck
         distanceToNextObstacle = game.distanceNextObstacle
-        state = [isJump, isDuck, distanceToNextObstacle]
+        type = game.type
+        state = [isJump, isDuck, distanceToNextObstacle, type]
         return np.array(state, dtype=int)
         
 
@@ -47,7 +48,7 @@ class Agent:
 
     def get_action(self, state):
         #random moves: tradeoff exploration / exploitation
-        self.epsilon = 200 - self.n_games
+        self.epsilon = 20 - self.n_games
         final_move = [0,0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,1)
