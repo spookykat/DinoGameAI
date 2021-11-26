@@ -19,6 +19,7 @@ class Agent:
         self.epsilon = 0 #randomness
         self.gamma = 0.9
         self.memory = deque(maxlen=MAX_MEMORY)
+<<<<<<< HEAD
         self.model = Linear_Qnet(4,256, 256, 2)
         
         if os.path.exists('./model'):
@@ -26,6 +27,9 @@ class Agent:
             self.model.load_state_dict(torch.load(file_name))
             self.model.eval()
 
+=======
+        self.model = Linear_Qnet(4, 256, 2) #TODO
+>>>>>>> 7fa48677c248b28f237f01839079534db2c4957d
         self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma) #TODO
 
 
@@ -33,8 +37,13 @@ class Agent:
         isJump = game.dino.isJump
         isDuck = game.dino.isDuck
         distanceToNextObstacle = game.distanceNextObstacle
+<<<<<<< HEAD
         dino_y = game.dino.yPosition
         state = [isJump, isDuck, distanceToNextObstacle, dino_y]
+=======
+        type = game.type
+        state = [isJump, isDuck, distanceToNextObstacle, type]
+>>>>>>> 7fa48677c248b28f237f01839079534db2c4957d
         return np.array(state, dtype=int)
         
 
@@ -55,7 +64,11 @@ class Agent:
 
     def get_action(self, state):
         #random moves: tradeoff exploration / exploitation
+<<<<<<< HEAD
         self.epsilon = 50 - self.n_games
+=======
+        self.epsilon = 20 - self.n_games
+>>>>>>> 7fa48677c248b28f237f01839079534db2c4957d
         final_move = [0,0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,1)
