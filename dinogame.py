@@ -68,7 +68,7 @@ class dinoGameAI:
             self.collided = not obstacle.collide(self.dino)
 
         self.distanceNextObstacle = obstacle.rect.x - self.dino.xPosition
-<<<<<<< HEAD
+        self.type = obstacle.type
 
         if self.jumped:
             obstacle.jumpcount +=1
@@ -76,11 +76,6 @@ class dinoGameAI:
         self.clock.tick(60)
         if obstacle.jumpcount < 10:
             reward += 5
-=======
-        self.type = obstacle.type
-        pygame.display.update()
-        self.clock.tick(60)
->>>>>>> 7fa48677c248b28f237f01839079534db2c4957d
         if not self.collided:
             reward += 10
         else:
