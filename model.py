@@ -5,14 +5,16 @@ import torch.nn.functional as F
 import os
 
 class Linear_Qnet(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, hidden_size, hidden_size2, output_size):
         super().__init__()
         self.linear1 = nn.Linear(input_size, hidden_size)
-        self.linear2 = nn.Linear(hidden_size, output_size)
+        self.linear2 = nn.Linear(hidden_size, hidden_size2)
+        self.linear3 = nn.Linear(hidden_size2, output_size)
 
     def forward(self, x):
         x = F.relu(self.linear1(x))
         x = self.linear2(x)
+        x = self.linear3(x)
         return x
 
     def save(self, file_name='model.pth'):
@@ -22,6 +24,8 @@ class Linear_Qnet(nn.Module):
         
         file_name = os.path.join(model_folder_path, file_name)
         torch.save(self.state_dict(), file_name)
+        for param in self.state_dict():
+            print(param, "\t", self.state_dict()[param].size())
 
 class Qtrainer:
     def __init__(self, model, lr, gamma):

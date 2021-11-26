@@ -6,6 +6,7 @@ from dinogame import dinoGameAI
 from collections import deque
 from model import Linear_Qnet, Qtrainer
 from helper import plot
+import os
 
 MAX_MEMORY = 200_000
 BATCH_SIZE = 2000
@@ -16,9 +17,15 @@ class Agent:
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0 #randomness
-        self.gamma = 0.8
+        self.gamma = 0.9
         self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = Linear_Qnet(3, 256, 2) #TODO
+        self.model = Linear_Qnet(4,256, 256, 2)
+        
+        if os.path.exists('./model'):
+            file_name = os.path.join('./model', 'model.pth')
+            self.model.load_state_dict(torch.load(file_name))
+            self.model.eval()
+
         self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma) #TODO
 
 
@@ -26,7 +33,8 @@ class Agent:
         isJump = game.dino.isJump
         isDuck = game.dino.isDuck
         distanceToNextObstacle = game.distanceNextObstacle
-        state = [isJump, isDuck, distanceToNextObstacle]
+        dino_y = game.dino.yPosition
+        state = [isJump, isDuck, distanceToNextObstacle, dino_y]
         return np.array(state, dtype=int)
         
 
@@ -47,7 +55,7 @@ class Agent:
 
     def get_action(self, state):
         #random moves: tradeoff exploration / exploitation
-        self.epsilon = 200 - self.n_games
+        self.epsilon = 50 - self.n_games
         final_move = [0,0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,1)

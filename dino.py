@@ -13,10 +13,12 @@ class Dino:
         self.jumpcount = 10
         self.dinoSprite = Rect(self.xPosition,self.yPosition - 40,20,40)
         self.isDuck = False
+        self.inAir = False
         
     def jump(self):
         if self.isJump:
             if self.jumpcount >= -10:
+                self.inAir = True
                 neg = 1
                 if self.jumpcount > 0:
                     neg = -1
@@ -24,6 +26,7 @@ class Dino:
                 self.jumpcount -= 1
             else:
                 self.isJump = False
+                self.inAir = False
                 self.jumpcount = 10
     
     def duck(self):

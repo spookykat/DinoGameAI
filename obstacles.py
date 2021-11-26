@@ -8,6 +8,7 @@ class Obstacle:
         self.rect.x = 700 + x
         self.game_speed = game_speed
         self.color_green = pygame.Color(0,255,0)
+        self.jumpcount = 0
     
     def update(self, obstacles):
         self.rect.x -= self.game_speed

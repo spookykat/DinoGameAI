@@ -25,6 +25,7 @@ pygame.draw.line(background, pygame.Color(0,0,0), (0, 250), (700,250))
 
 running = True
 while running:
+  jumped = False 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
@@ -32,6 +33,7 @@ while running:
             if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                 # Start to jump by setting isJump to True.
               dino.isJump = True
+              jumped = True
             if event.key == pygame.K_DOWN:
               dino.isDuck = True
     else:
@@ -58,6 +60,9 @@ while running:
     running = obstacle.collide(dino)
 
   distanceNextObstacle = obstacle.rect.x - dino.xPosition
+  if jumped:
+    obstacle.jumpcount += 1
+  print(obstacle.jumpcount)
   clock.tick(30)
   pygame.display.update()
 

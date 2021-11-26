@@ -42,18 +42,21 @@ class dinoGameAI:
 
     def play_step(self, action):
         self.frameiteration += 1
-
+        self.jumped = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
         self.move(action)
 
+
         self.screen.blit(self.background, (0,0))
 
         
         self.score += 0.03 * self.gamespeed
         self.gamespeed += 0.02
+
+        reward = 0
 
         self.placeObstacle()
 
@@ -62,18 +65,26 @@ class dinoGameAI:
             obstacle.update(self.obstacles)     
             obstacle.draw(self.screen)
             self.collided = not obstacle.collide(self.dino)
+
         self.distanceNextObstacle = obstacle.rect.x - self.dino.xPosition
+
+        if self.jumped:
+            obstacle.jumpcount +=1
         pygame.display.update()
-        self.clock.tick(100)
+        self.clock.tick(60)
+        if obstacle.jumpcount < 10:
+            reward += 5
         if not self.collided:
-            reward = int(self.score / 10)
+            reward += 10
         else:
-            reward = -10
+            reward -= -10
+
         return reward, self.collided, self.score
 
     def move(self, action=[0,0]):
         if action[0] == 1:
             self.dino.isJump = True
+            self.jumped = True
         if action[1] == 1:
             self.dino.isDuck = True
         else:
