@@ -13,20 +13,19 @@ BATCH_SIZE = 2000
 LR = 0.001
 
 class Agent:
-
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0 #randomness
         self.gamma = 0.9
         self.memory = deque(maxlen=MAX_MEMORY)
-        self.model = Linear_Qnet(5,256, 256, 2)
+        self.model = Linear_Qnet(6,256, 256, 2)
         
         if os.path.exists('./model'):
             file_name = os.path.join('./model', 'model.pth')
             self.model.load_state_dict(torch.load(file_name))
             self.model.eval()
 
-        self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma) #TODO
+        self.trainer = Qtrainer(self.model, lr=LR, gamma=self.gamma) 
 
 
     def get_state(self, game):
@@ -35,8 +34,9 @@ class Agent:
         distanceToNextObstacle = game.distanceNextObstacle
         dino_y = game.dino.yPosition
         obstacle_type = game.type
-        state = [isJump, isDuck, distanceToNextObstacle, dino_y, obstacle_type]
-        return np.array(state, dtype=int)
+        game_speed = game.gamespeed
+        state = [isJump, isDuck, distanceToNextObstacle, dino_y, obstacle_type, game_speed]
+        return np.array(state, dtype=float)
         
 
     def remember(self, state, action, reward, next_state, done):
@@ -56,15 +56,15 @@ class Agent:
 
     def get_action(self, state):
         #random moves: tradeoff exploration / exploitation
-        self.epsilon = 50 - self.n_games
+        self.epsilon = 0 - self.n_games
         final_move = [0,0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0,1)
             final_move[move] = 1
         else:
             state0 = torch.tensor(state, dtype=torch.float)
-            print(state0)
             prediction = self.model(state0)
+            print(state0)
             move = torch.argmax(prediction).item()
             final_move[move] = 1
         

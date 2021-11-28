@@ -4,7 +4,6 @@ from pygame.draw import rect
 
 
 class Dino:
-
     def __init__(self):
         self.xPosition = 30
         self.yPosition = 250
@@ -40,7 +39,5 @@ class Dino:
         self.jump()
         self.draw(screen)
             
-
     def draw(self, screen):
-        
         pygame.draw.rect(screen, self.color_red, self.dinoSprite)

@@ -55,7 +55,7 @@ class dinoGameAI:
 
         
         self.score += 0.03 * self.gamespeed
-        self.gamespeed += 0.002
+        self.gamespeed += 0.02
 
         reward = 0
 

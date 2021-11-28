@@ -60,15 +60,8 @@ while running:
     running = obstacle.collide(dino)
 
   distanceNextObstacle = obstacle.rect.x - dino.xPosition
-<<<<<<< HEAD
-  if jumped:
-    obstacle.jumpcount += 1
-  print(obstacle.jumpcount)
-  clock.tick(30)
-=======
   print(obstacle.type)
   clock.tick(60)
->>>>>>> 7fa48677c248b28f237f01839079534db2c4957d
   pygame.display.update()
 
 print(math.floor(score))
